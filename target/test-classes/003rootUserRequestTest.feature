@@ -8,7 +8,7 @@ Feature: Perform all root user task actions on created admins and users
   Scenario: Add test admin to database with root user authorization
     Given the root user authorization token
     When root user create the test object containing the test admin data
-    Then root user send POST request to /admin/create with 'adminTest@test.com'
+    Then root user send POST request to /admin/create including the test user data
     Then successfully created the admin user 'adminTest@test.com'
     Then obtain the test admin record ID
 
