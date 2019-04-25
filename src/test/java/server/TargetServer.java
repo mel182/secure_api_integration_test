@@ -5,8 +5,7 @@ import java.net.Socket;
 
 public class TargetServer {
 
-    public static final String IP_ADDRESS = "192.168.1.100";
-//    public static final String IP_ADDRESS = "10.38.146.61";
+    public static final String IP_ADDRESS = "127.0.0.1";
     public static final int PORT_NR = 3000;
     public static final String BASE_URL = String.format("https://%s:%d",IP_ADDRESS,PORT_NR);
 

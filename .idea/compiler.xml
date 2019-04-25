@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="secure_api_integration_test" target="7" />
+      <module name="secure_api_integration_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

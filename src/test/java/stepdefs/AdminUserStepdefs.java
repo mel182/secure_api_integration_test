@@ -23,9 +23,14 @@ import java.util.List;
 
 import static org.junit.Assume.assumeTrue;
 
+/**
+ * This is the cucumber class that execute all the adminUserRequestTest.feature scenarios.
+ *
+ * @author Melchior Vrolijk
+ * @see cucumber.api.java8.En
+ */
 public class AdminUserStepdefs implements En
 {
-
     //region Local instances
     private Object testAdminLoginRequestResponse = "";
     private Object createdTestUserRequestResponse = "";
@@ -41,14 +46,20 @@ public class AdminUserStepdefs implements En
     //endregion
 
     //region Login as test admin
+    /**
+     * Login as a test admin scenario
+     */
     @Given("^test admin login credentials$")
-    public void rootUserGetAResponseThatTestUserHasBeenSuccessfullyRemoved() throws Throwable
+    public void retrieveTestAdminLoginCredentials()
     {
         assumeTrue(true);
     }
 
+    /**
+     * Login as test admin
+     */
     @Then("^test admin send POST request to /auth/login with test admin login credentials$")
-    public void loginAsTestAdmin() throws Throwable
+    public void loginAsTestAdmin()
     {
         HashMap<String,String> requestBody = new HashMap<>();
         requestBody.put(HttpConstant.EMAIL_KEY,StateHolder.TEST_ADMIN_USERNAME);
@@ -75,35 +86,50 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if the test admin is logged in successfully
+     */
     @Then("^successfully logged as test admin$")
-    public void checkIfTestAdminIsLoggedInSuccessfully() throws Throwable
+    public void checkIfTestAdminIsLoggedInSuccessfully()
     {
         StateHolder.created_admin = JsonParser.toAuthenticatedUser(this.testAdminLoginRequestResponse.toString());
         assumeTrue(StateHolder.created_admin.getID() != -1);
     }
 
+    /**
+     * Obtain test admin authorization token
+     */
     @Then("^obtain test admin authorization token$")
-    public void retrieveTestAdminAuthorizationToken() throws Throwable
+    public void retrieveTestAdminAuthorizationToken()
     {
         assumeTrue(!StateHolder.created_admin.getSessionToken().equals(""));
     }
 
+    /**
+     * Obtain test admin user database record
+     */
     @Then("^obtain test admin user record ID$")
-    public void retrieveTestAdminRecordID() throws Throwable
+    public void retrieveTestAdminRecordID()
     {
         assumeTrue(StateHolder.created_admin.getID() != -1);
     }
     //endregion
 
     //region Test admin create test user test
+    /**
+     * Test admin create test user object
+     */
     @When("^test admin create test user object$")
-    public void testAdminCreateTestUserObject() throws Throwable
+    public void testAdminCreateTestUserObject()
     {
         this.testUserObject = new NewUserObject("testUser@test.com","Test","User","Occupation","test123");
     }
 
+    /**
+     * Test admin call /user/create API for creating the test user
+     */
     @Then("^test admin send POST request to /user/create including test user data$")
-    public void testAdminSendPOSTRequestToServerToCreateTestUser() throws Throwable
+    public void testAdminSendPOSTRequestToServerToCreateTestUser()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.CONTENT_TYPE_KEY,HttpConstant.MEDIA_TYPE_JSON);
@@ -134,23 +160,32 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if test user is successfully created
+     */
     @Then("^successfully created test user$")
-    public void determineIfTestUserIsSuccessfullyCreated() throws Throwable
+    public void determineIfTestUserIsSuccessfullyCreated()
     {
         StateHolder.created_user = JsonParser.toAuthenticatedUser(this.createdTestUserRequestResponse.toString());
         assumeTrue(!StateHolder.created_user.getEmail().equals(""));
     }
 
+    /**
+     * Obtain test user database record ID
+     */
     @Then("^obtain test user record ID$")
-    public void obtainTestUserRecordID() throws Throwable
+    public void obtainTestUserRecordID()
     {
         assumeTrue(StateHolder.created_user.getID() != -1);
     }
     //endregion
 
     //region Test admin retrieve list of all users
+    /**
+     * Test admin call /user/all api to retrieve list of all users
+     */
     @When("^test admin send GET request to /user/all to retrieve list of all users$")
-    public void testAdminRetrieveListOfAllUserTest() throws Throwable
+    public void testAdminRetrieveListOfAllUserTest()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.created_admin.getSessionToken());
@@ -173,8 +208,11 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if test admin successfully retrieve list of user by checking if the server response is a valid JSON array
+     */
     @Then("^successfully retrieved list of users$")
-    public void determineIfTestAdminSuccessfullyRetrievedListOfUsers() throws Throwable
+    public void determineIfTestAdminSuccessfullyRetrievedListOfUsers()
     {
         if (this.userListResponse != null) {
             Object json = new JSONTokener(this.userListResponse.toString()).nextValue();
@@ -185,8 +223,11 @@ public class AdminUserStepdefs implements En
     //endregion
 
     //region Test admin attempt to retrieve list of all admins
+    /**
+     * Test admin call /admin/all to retrieve list of all admins
+     */
     @When("^test admin send GET request to /admin/all to retrieve list of all admins$")
-    public void testAdminAttemptToRetrieveListOfAdmins() throws Throwable
+    public void testAdminAttemptToRetrieveListOfAdmins()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.created_admin.getSessionToken());
@@ -210,22 +251,32 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if server block test admin from retrieving list of admins
+     * @param response_code The expected response code
+     */
     @Then("^server successfully block such attempt by sending response code (\\d+) 'unauthorized'$")
-    public void determineIfServerBlockAdminListRequest(int response_code) throws Throwable
+    public void determineIfServerBlockAdminListRequest(int response_code)
     {
         assumeTrue(this.adminListResponse == response_code);
     }
     //endregion
 
     //region Test admin attempt to create new admin
+    /**
+     * Test admin create a new admin user object
+     */
     @When("^test admin create new admin user object$")
-    public void testAdminCreateNewAdminObject() throws Throwable
+    public void testAdminCreateNewAdminObject()
     {
         this.testAdminObject = new NewUserObject("testadmin2@test.com","Test","Admin2","Test admin 2","testadmin2");
     }
 
+    /**
+     * Test admin attempt to create a new admin user
+     */
     @When("^test admin send POST request to /admin/create including the new test admin user object$")
-    public void testAdminAttemptToCreateNewAdmin() throws Throwable
+    public void testAdminAttemptToCreateNewAdmin()
     {
         HashMap<String,String> requestBody = new HashMap<>();
         requestBody.put(JSONKeys.EMAIL,this.testAdminObject.getEmail());
@@ -259,21 +310,32 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if the server successfully block test admin from creating new admin user
+     * @param expected_response_code The expected response code
+     */
     @Then("^server successfully block such attempt to create new admin by sending response code (\\d+) 'unauthorized'$")
-    public void serverSuccessfullyBlockSuchAttemptToCreateNewAdminBySendingResponseCodeUnauthorized(int expected_response_code) throws Throwable {
+    public void serverSuccessfullyBlockSuchAttemptToCreateNewAdminBySendingResponseCodeUnauthorized(int expected_response_code)
+    {
         assumeTrue(this.admin2AttemptResponseCode == expected_response_code);
     }
     //endregion
 
-    //region Test admin attemp to update test user personal information test
+    //region Test admin attempt to update test user personal information test
+    /**
+     * Test admin create a test user object
+     */
     @When("^test admin created updated object of the test user$")
-    public void testAdminCreateUpdatedTestUserObject() throws Throwable
+    public void testAdminCreateUpdatedTestUserObject()
     {
         this.updatedTestUserObject = new NewUserObject("testUser@test.com","Test123","User123","Occupation123","test123");
     }
 
+    /**
+     * Test admin call /user/update in a attempt to update a test user personal data
+     */
     @When("^test admin send PUT request to /user/update including the test user record ID and updated values$")
-    public void testAdminAttemptToUpdateTestUser() throws Throwable
+    public void testAdminAttemptToUpdateTestUser()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.created_admin.getSessionToken());
@@ -306,16 +368,23 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if the server successfully blocked test admin from updating test user personal data
+     * @param expected_response_code The expected response code
+     */
     @Then("^server successfully block test user update task since by sending response code (\\d+) 'unauthorized'$")
-    public void serverSuccessfullyBlockTestUserUpdateTaskSinceBySendingResponseCodeUnauthorized(int expected_response_code) throws Throwable
+    public void serverSuccessfullyBlockTestUserUpdateTaskSinceBySendingResponseCodeUnauthorized(int expected_response_code)
     {
         assumeTrue(updateTestUserAttemptResponseCode == expected_response_code);
     }
     //endregion
 
     //region Test admin attempt to remove admin from database
+    /**
+     * Test admin attempt to delete admin from database
+     */
     @When("^test admin send DELETE request to /admin/ including the test user record ID$")
-    public void testAdminAttemptToDeletedAdminFromDatabase() throws Throwable
+    public void testAdminAttemptToDeletedAdminFromDatabase()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.created_admin.getSessionToken());
@@ -343,16 +412,23 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Detemine if the server successfully blocked test admin from deleting admin from database
+     * @param expected_response_code The expected response code
+     */
     @Then("^server successfully block delete admin task by sending response code (\\d+) 'unauthorized'$")
-    public void testAdminAttemptToDeletedAdminFromDatabase(int expected_response_code) throws Throwable
+    public void testAdminAttemptToDeletedAdminFromDatabase(int expected_response_code)
     {
         assumeTrue(deleteTestAdminRequestResponseCode == expected_response_code);
     }
     //endregion
 
     //region Test admin remove user from database
+    /**
+     * Test admin remove test user from database
+     */
     @When("^test admin send DELETE request to /user/ including the test user record ID$")
-    public void testAdminDeleteUserFromDatabase() throws Throwable
+    public void testAdminDeleteUserFromDatabase()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.created_admin.getSessionToken());
@@ -379,13 +455,21 @@ public class AdminUserStepdefs implements En
         );
     }
 
+    /**
+     * Determine if test admin successfully deleted test user from database by checking the response code
+     * @param expected_responds_code The expected response code
+     */
     @Then("^test admin successfully deleted test user from database by checking respond code equal to (\\d+)$")
-    public void testAdminSuccessfullyDeletedTestUserFromDatabaseByCheckingRespondCodeEqualTo(int expected_responds_code) throws Throwable {
+    public void testAdminSuccessfullyDeletedTestUserFromDatabaseByCheckingRespondCodeEqualTo(int expected_responds_code)
+    {
         assumeTrue(deleteTestUserRequestResponseCode == expected_responds_code);
     }
 
+    /**
+     * Determine if test admin successfully removed test user from database by making a request to /user/all and verify if the test user is indeed removed
+     */
     @Then("^determine if test admin successfully deleted test user from database$")
-    public void determineIfTestAdminHasSuccessfullyRemovedTestUserFromDatabase() throws Throwable
+    public void determineIfTestAdminHasSuccessfullyRemovedTestUserFromDatabase()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
         requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
@@ -414,7 +498,5 @@ public class AdminUserStepdefs implements En
                 })
         );
     }
-
-
     //endregion
 }

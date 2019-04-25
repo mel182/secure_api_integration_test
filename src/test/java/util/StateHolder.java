@@ -14,5 +14,7 @@ public class StateHolder
     public static int userDeletedResponseCode = -1;
     public static final String TEST_ADMIN_USERNAME = "admin@test.com";
     public static final String TEST_ADMIN_PASSWORD = "admin123";
+    public static final String TEST_USER_USERNAME = "testUser@test.com";
+    public static final String TEST_USER_PASSWORD = "test123";
 
 }
