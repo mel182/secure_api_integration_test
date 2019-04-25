@@ -1,6 +1,5 @@
 package util;
 
-import gherkin.deps.com.google.gson.JsonObject;
 import model.AuthenticatedUser;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,8 +8,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the JSON parser used within the entire application
+ * @author Melchior Vrolijk
+ */
 public class JsonParser
 {
+    //region Convert raw server response to authenticated user
+    /**
+     * Convert raw server response to an authenticated user
+     * @param raw_response The raw server response
+     * @return The authenticated user object
+     */
     public static AuthenticatedUser toAuthenticatedUser(String raw_response)
     {
         try{
@@ -28,7 +37,14 @@ public class JsonParser
             return null;
         }
     }
+    //endregion
 
+    //region Convert raw response to list of authenticated users
+    /**
+     * Convert raw response to list authenticated user
+     * @param raw_response The server raw response
+     * @return The list of authenticated users
+     */
     public static List<AuthenticatedUser> toUserList(String raw_response)
     {
         List<AuthenticatedUser> authenticatedUserList = new ArrayList<>();
@@ -50,4 +66,5 @@ public class JsonParser
 
         return authenticatedUserList;
     }
+    //endregion
 }

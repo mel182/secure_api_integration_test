@@ -1,5 +1,9 @@
 package HttpUtil.constant;
 
+/**
+ * This is the Http constant values
+ * @author Melchior Vrolijk
+ */
 public class HttpConstant
 {
     public static final String AUTHORIZATION_HEADER_KEY = "Authorization";

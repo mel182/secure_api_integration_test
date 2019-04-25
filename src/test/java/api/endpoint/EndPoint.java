@@ -1,5 +1,9 @@
 package api.endpoint;
 
+/**
+ * This http end points format list
+ * @author Melchior Vrolijk
+ */
 public enum EndPoint
 {
     LOGIN("POST:/auth/login"),

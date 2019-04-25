@@ -1,5 +1,9 @@
 package HttpUtil;
 
+/**
+ * This is the API request method
+ * @author Melchior Vrolijk
+ */
 public class HttpMethod
 {
     public static final String GET = "GET";

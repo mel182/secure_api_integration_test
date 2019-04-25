@@ -3,6 +3,10 @@ package util;
 import HttpUtil.constant.HttpConstant;
 import model.AuthenticatedUser;
 
+/**
+ * This is the test state holder of test scenarios
+ * @author Melchior Vrolijk
+ */
 public class StateHolder
 {
     public static String authorization_token = "";
