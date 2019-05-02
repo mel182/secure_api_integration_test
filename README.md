@@ -1,16 +1,11 @@
 # Secure API project integration test
-This is the [secure api integration](https://github.com/mel182/SecureWebApi) integration test project using the testing tool [Cucumber](https://cucumber.io/). 
+This is the [secure api](https://github.com/mel182/SecureWebApi) integration test project using the testing tool [Cucumber](https://cucumber.io/). 
 
 ## Installation
-Downloading or clone the project and open it into your Java IDE.
-
-
-```bash
-pip install foobar
-```
+Downloading or clone the project and open it in your Java IDE.
 
 ## Usage
-Before running the integration test you must the [secure api integration](https://github.com/mel182/SecureWebApi) and have the server running.
+Before running this project you must have the [secure api](https://github.com/mel182/SecureWebApi) project running.
 For running the integration test just select the 'CucumberIntegrationTest' class located in the java test folder and run it.
 
 ## Contributing
