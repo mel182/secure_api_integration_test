@@ -13,7 +13,12 @@ public enum EndPoint
     CREATE_USER("POST:/user/create"),
     UPDATE_USER("PUT:/user/update/*"),
     ALL_USER("GET:/user/all"),
-    DELETE_USER("DELETE:/user/*");
+    DELETE_USER("DELETE:/user/*"),
+    NEW_POST("POST:/post/create"),
+    ALL_POST("GET:/post/all"),
+    GET_POST("GET:/post/*"),
+    UPDATE_POST("PUT:/post/update/*"),
+    DELETE_POST("DELETE:/post/*");
 
     private String endpoint;
 

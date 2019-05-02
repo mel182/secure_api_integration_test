@@ -101,8 +101,8 @@ public class RootUserActionsStepdefs implements En {
     {
         try{
             AuthenticatedUser authenticationResponse = JsonParser.toAuthenticatedUser(loginRequestResponse.toString());
-            StateHolder.authorization_token = authenticationResponse.getSessionToken();
-            assertThat(StateHolder.authorization_token).isNotEqualTo("");
+            StateHolder.root_user_authorization_token = authenticationResponse.getSessionToken();
+            assertThat(StateHolder.root_user_authorization_token).isNotEqualTo("");
         }catch (NullPointerException e)
         {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class RootUserActionsStepdefs implements En {
     @Given("^the root user authorization token$")
     public void checkRootUserAuthorizationToken()
     {
-        assertThat(StateHolder.authorization_token).isNotEqualTo("");
+        assertThat(StateHolder.root_user_authorization_token).isNotEqualTo("");
     }
 
     /**
@@ -145,7 +145,7 @@ public class RootUserActionsStepdefs implements En {
             requestBody.put(JSONKeys.PASSWORD,this.test_admin.getPassword());
 
             HashMap<String,String> requestHeader = new HashMap<>();
-            requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+            requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
             requestHeader.put(HttpConstant.CONTENT_TYPE_KEY,HttpConstant.MEDIA_TYPE_JSON);
 
             Api.call(new ApiCall()
@@ -161,7 +161,9 @@ public class RootUserActionsStepdefs implements En {
                         }
 
                         @Override
-                        public void OnRequestFailed(int responseCode, String error) { }
+                        public void OnRequestFailed(int responseCode, String error) {
+                            System.out.println("Error creating admin user, response code: "+responseCode+" error: "+error);
+                        }
                     })
             );
         }
@@ -173,6 +175,7 @@ public class RootUserActionsStepdefs implements En {
     @Then("^successfully created the admin user 'adminTest@test.com'$")
     public void successfullyCreatedTheAdminUserAdminTestTestCom()
     {
+        System.out.println("admin object: "+createAdminResponse);
         StateHolder.created_admin = JsonParser.toAuthenticatedUser(createAdminResponse.toString());
         assumeTrue(true);
     }
@@ -194,7 +197,7 @@ public class RootUserActionsStepdefs implements En {
     @Given("^the root user authorization token, test admin email 'adminTest@test.com' and record ID$")
     public void retrieveRootUserAuthorizationToken()
     {
-        assertThat(StateHolder.authorization_token).isNotEqualTo("");
+        assertThat(StateHolder.root_user_authorization_token).isNotEqualTo("");
     }
 
     /**
@@ -204,7 +207,7 @@ public class RootUserActionsStepdefs implements En {
     public void retrieveListOfAllAdmins()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         Api.call(new ApiCall()
                 .setEndPoint(EndPoint.ALL_ADMIN.getValue())
@@ -269,7 +272,7 @@ public class RootUserActionsStepdefs implements En {
     public void rootUserSendADELETERequestToAdminIdIncludingTheAuthorizationTokenAndTestAdminRecordID()  {
 
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         String[] params = new String[] {Integer.toString(StateHolder.created_admin.getID())};
 
@@ -306,7 +309,7 @@ public class RootUserActionsStepdefs implements En {
     public void verifyIfTestAdminHasBeenRemoved()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         Api.call(new ApiCall()
                 .setEndPoint(EndPoint.ALL_ADMIN.getValue())
@@ -420,7 +423,7 @@ public class RootUserActionsStepdefs implements En {
     @Given("^the root user authorization token and test user record ID$")
     public void theRootUserAuthorizationTokenAndTestUserRecordID()
     {
-        assumeTrue(!StateHolder.authorization_token.equals("") && StateHolder.created_user.getID() != -1);
+        assumeTrue(!StateHolder.root_user_authorization_token.equals("") && StateHolder.created_user.getID() != -1);
     }
 
     /**
@@ -430,7 +433,7 @@ public class RootUserActionsStepdefs implements En {
     public void rootUserSendAGETRequestToUsersAllIncludingTheAuthorizationToken()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         Api.call(new ApiCall()
                 .setEndPoint(EndPoint.ALL_USER.getValue())
@@ -488,7 +491,7 @@ public class RootUserActionsStepdefs implements En {
     public void rootUserSendADELETERequestToUserIncludingTheAuthorizationTokenAndTestUserRecordID()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         String[] params = new String[] {Integer.toString(StateHolder.created_user.getID())};
 
@@ -524,7 +527,7 @@ public class RootUserActionsStepdefs implements En {
     public void rootUserVerifiedIfTheTestUserIsIndeedRemovedFromTheDatabaseByCallingAdminAll()  {
 
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         Api.call(new ApiCall()
                 .setEndPoint(EndPoint.ALL_USER.getValue())

@@ -1,6 +1,7 @@
 package util;
 
 import model.AuthenticatedUser;
+import model.Post;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +66,30 @@ public class JsonParser
         }
 
         return authenticatedUserList;
+    }
+    //endregion
+
+    //region Convert raw server response to Post object
+    /**
+     * Convert raw server response to an {@link model.Post}
+     * @param raw_response The raw server response
+     * @return The post object
+     */
+    public static Post toPost(String raw_response)
+    {
+        try{
+            JSONObject jsonObject = new JSONObject(raw_response);
+            int id = jsonObject.has(JSONKeys.ID) ? jsonObject.getInt(JSONKeys.ID) : -1;
+            String title = jsonObject.has(JSONKeys.TITLE) ? jsonObject.getString(JSONKeys.TITLE) : "";
+            String description = jsonObject.has(JSONKeys.DESCRIPTION) ? jsonObject.getString(JSONKeys.DESCRIPTION) : "";
+            String category = jsonObject.has(JSONKeys.CATEGORY) ? jsonObject.getString(JSONKeys.CATEGORY) : "";
+            long creator = jsonObject.has(JSONKeys.CREATOR) ? jsonObject.getLong(JSONKeys.CREATOR) : -1;
+
+            return new Post(id,title,description,category,creator);
+        }catch (JSONException e)
+        {
+            return null;
+        }
     }
     //endregion
 }

@@ -14,5 +14,10 @@ public class JSONKeys
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     static final String SESSION_TOKEN = "sessionToken";
+
+    static final String TITLE = "title";
+    static final String DESCRIPTION = "description";
+    static final String CATEGORY = "category";
+    static final String CREATOR = "creator";
     //endregion
 }

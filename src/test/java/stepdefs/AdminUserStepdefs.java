@@ -5,7 +5,6 @@ import api.Api;
 import api.ApiCall;
 import api.callback.HttpResponseCallback;
 import api.endpoint.EndPoint;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -472,7 +471,7 @@ public class AdminUserStepdefs implements En
     public void determineIfTestAdminHasSuccessfullyRemovedTestUserFromDatabase()
     {
         HashMap<String,String> requestHeader = new HashMap<>();
-        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.authorization_token);
+        requestHeader.put(HttpConstant.AUTHORIZATION_HEADER_KEY,StateHolder.root_user_authorization_token);
 
         Api.call(new ApiCall()
                 .setEndPoint(EndPoint.ALL_USER.getValue())

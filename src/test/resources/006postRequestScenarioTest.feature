@@ -1,11 +1,11 @@
 Feature: Perform all tasks related to the post API and also perform forbidden action and determine if the server block unauthorized actions
-  Scenario: 1 root user authenticate by login with the root user credentials
+  Scenario: root user authenticate by login with the root user credentials
     Given the root user credentials
     When try to login with the given root user credentials
     Then successfully login as the root user
     Then obtain the authorization token
 
-  Scenario: 2 Add test admin to database with root user authorization
+  Scenario: Add test admin to database with root user authorization
     Given the root user authorization token
     When root user create the test object containing the test admin data
     Then root user send POST request to /admin/create including the test user data
@@ -132,19 +132,19 @@ Feature: Perform all tasks related to the post API and also perform forbidden ac
     Then user_2 got an unauthorized 401 response back from the server since it is not authorized to perform such task ONLY THE POST CREATOR, ADMIN OR ROOT USER
 
   Scenario: 23 admin attempt to remove the user post item
-    Given admin authorization token and post item ID
+    Given admin authorization token and post item ID to delete
     When admin try calling the /post/id DELETE API
     Then admin successfully removed post item data since server returns response code 200
 
   Scenario: 24 user_2 (post creator) attempt to remove its own post item
     Given user_2 authorization token and post item ID
-    When user_2 try calling the /post/id DELETE API
+    When user_2 try calling the /post/id DELETE API to delete its own post item
     Then user_2 successfully updated post item data since server returns response code 200
 
   Scenario: 25 admin attempt to remove its own post item
     Given admin authorization token and post item ID
-    When admin try calling the /post/id DELETE API
-    Then admin successfully updated post item data since server returns response code 200
+    When admin try calling the /post/id DELETE API to remove his own post item
+    Then admin successfully removed his own post item data since server returns response code 200
 
   Scenario: 26 root user remove test user from the database
     Given the root user authorization token and test user record ID
@@ -160,10 +160,10 @@ Feature: Perform all tasks related to the post API and also perform forbidden ac
     Then root user verified if the test user_2 is indeed removed from the database by calling /user/all
     Then root user verified if test user_2 has been successfully removed from the database
 
-  Scenario: 28 Add test admin to database with root user authorization
-    Given the root user authorization token
-    When root user create the test object containing the test admin data
-    Then root user send POST request to /admin/create including the test user data
-    Then successfully created the admin user 'adminTest@test.com'
-    Then obtain the test admin record ID
+  Scenario: 28 root user remove test admin from the database
+    Given the root user authorization token and test admin user record ID
+    When root user send a DELETE request to /admin/ including the authorization token and test admin record ID
+    Then root user get a response that admin has been successfully removed
+    Then root user verified if the test admin is indeed removed from the database by calling /admin/all
+    Then test admin has been successfully removed from the database
 
