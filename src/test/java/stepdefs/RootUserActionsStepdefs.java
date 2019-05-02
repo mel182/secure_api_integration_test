@@ -175,7 +175,6 @@ public class RootUserActionsStepdefs implements En {
     @Then("^successfully created the admin user 'adminTest@test.com'$")
     public void successfullyCreatedTheAdminUserAdminTestTestCom()
     {
-        System.out.println("admin object: "+createAdminResponse);
         StateHolder.created_admin = JsonParser.toAuthenticatedUser(createAdminResponse.toString());
         assumeTrue(true);
     }
